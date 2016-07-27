@@ -1,0 +1,2 @@
+export const STATUS_SEARCHING = 'STATUS_SEARCHING'
+export const STATUS_DONE = 'STATUS_DONE'

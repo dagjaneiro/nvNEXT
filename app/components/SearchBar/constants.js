@@ -1,0 +1,2 @@
+export const MODE_SEARCH = 'MODE_SEARCH'
+export const MODE_SELECTED = 'MODE_SELECTED'
