@@ -118,7 +118,8 @@
     "redux-saga": "^0.11.0",
     "reselect": "^2.5.3",
     "shortid": "^2.2.6",
-    "source-map-support": "^0.4.0"
+    "source-map-support": "^0.4.0",
+    "tablesort": "^4.1.0"
   },
   "devEngines": {
     "node": "4.x || 5.x || 6.x",
