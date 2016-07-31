@@ -76,6 +76,7 @@ class SearchBar extends Component {
   }
 
   onEnter (value) {
+    if (!value.trim()) return
     switch (this.props.mode) {
       case MODE_SEARCH:
         this.props.onCreateItem(value)

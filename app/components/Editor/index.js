@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import moment from 'moment'
 import CodeMirror from 'codemirror'
 import 'codemirror/mode/gfm/gfm'
 import 'codemirror/mode/javascript/javascript'
@@ -87,30 +88,28 @@ class Editor extends Component {
     }
 
     if (currentId !== nextId) {
-      // if (currentId) this.saveDoc(currentId)
       const nextNote = nextId ? nextProps.note : { id: null, content: '' }
       this.setState({ note: nextNote }, () => {
         this.editor.setDoc(defaultMarkdownParser.parse(this.state.note.content))
-        // if (nextNote.id && !nextNote.dateSaved) this.setFocus()
+        if (nextNote.cursorPosition) {
+          this.editor.setTextSelection(nextNote.cursorPosition)
+        }
       })
     }
   }
 
-  saveDoc (currentId) {
-    console.log('saving ' + currentId + ' ' + this.state.note.title)
+  saveDoc () {
     const note = Object.assign({}, this.state.note, {
       content: defaultMarkdownSerializer.serialize(this.editor.doc),
-      dateSaved: new Date()
+      dateModified: moment().format('X'),
+      cursorPosition: this.editor.selection.from
     })
     this.props.onTriggerSave(note)
   }
 
   shouldComponentUpdate (nextProps) {
     if (nextProps.shouldSave && this.state.note.id) {
-      const note = this.state.note ? Object.assign({}, this.state.note, {
-        content: defaultMarkdownSerializer.serialize(this.editor.doc)
-      }) : {}
-      this.props.onTriggerSave(note)
+      this.saveDoc()
       return false
     }
     return true

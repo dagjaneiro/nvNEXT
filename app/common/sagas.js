@@ -15,6 +15,7 @@ function createDocument (id, title) {
     type: 'text',
     title: title,
     content: '',
+    cursorPosition: 0,
     dateCreated: moment().format('X'),
     dateSaved: moment().format('X')
   }
