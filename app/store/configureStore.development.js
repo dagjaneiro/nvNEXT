@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import createLogger from 'redux-logger'
 import rootReducer from '../reducers'
-// import { triggerSearch } from './middleware'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../common/sagas'
 
@@ -14,7 +13,6 @@ const logger = createLogger({
 })
 
 const enhancer = compose(
-  // applyMiddleware(triggerSearch),
   applyMiddleware(sagaMiddleware),
   applyMiddleware(logger),
   window.devToolsExtension ? window.devToolsExtension() : noop => noop

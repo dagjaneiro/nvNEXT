@@ -119,7 +119,6 @@ SearchBar.propTypes = {
   selectedId: PropTypes.string,
   selectedTitle: PropTypes.string,
   autoSelect: PropTypes.bool.isRequired,
-  totalCount: PropTypes.number.isRequired,
   onPerformSearch: PropTypes.func.isRequired,
   onSelectItem: PropTypes.func.isRequired,
   onCreateItem: PropTypes.func.isRequired

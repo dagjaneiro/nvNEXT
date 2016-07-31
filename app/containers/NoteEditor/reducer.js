@@ -1,5 +1,5 @@
-import { REQUEST_SAVE, SAVE_NOTE } from '../../common/actions'
 import { FOCUS_EDITOR, BLUR_EDITOR } from './actions'
+import { REQUEST_SAVE, SAVE_NOTE } from '../../common/actions'
 
 const initialState = {
   save: false,

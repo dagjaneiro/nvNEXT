@@ -18,7 +18,8 @@
     "package": "cross-env NODE_ENV=production node -r babel-register package.js",
     "package-all": "npm run package -- --all",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
-    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
+    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
+    "rebuild-sqlite3": "./node_modules/.bin/electron-rebuild -p -f -w sqlite3"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -69,7 +70,7 @@
     "electron-devtools-installer": "^1.1.5",
     "electron-packager": "^7.0.2",
     "electron-prebuilt": "^1.2.3",
-    "electron-rebuild": "^1.1.4",
+    "electron-rebuild": "^1.1.5",
     "eslint": "^2.10.2",
     "eslint-config-standard": "^5.3.5",
     "eslint-config-standard-react": "^3.0.0",
@@ -105,7 +106,6 @@
     "electron-debug": "^1.0.1",
     "font-awesome": "^4.6.3",
     "immutable": "^3.8.1",
-    "js-worker-search": "github:dagjaneiro/js-worker-search",
     "moment": "^2.14.1",
     "photon": "github:connors/photon",
     "prosemirror": "^0.8.3",
@@ -119,6 +119,7 @@
     "reselect": "^2.5.3",
     "shortid": "^2.2.6",
     "source-map-support": "^0.4.0",
+    "sqlite3": "^3.1.4",
     "tablesort": "^4.1.0"
   },
   "devEngines": {

@@ -1,11 +1,11 @@
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Editor from '../../components/Editor'
-import { getAutoSelect, getSelectedNote } from '../../common/selectors'
-import { getShouldSave, getShouldFocus } from './selectors'
-import { saveNote } from '../../common/actions'
-import { blurEditor } from './actions'
 import { createSelector } from 'reselect'
+import { bindActionCreators } from 'redux'
+import { blurEditor } from './actions'
+import { saveNote } from '../../common/actions'
+import { getShouldSave, getShouldFocus } from './selectors'
+import { getAutoSelect, getSelectedNote } from '../../common/selectors'
+import Editor from '../../components/Editor'
 
 const mapStateToProps = createSelector(
   [getShouldSave, getShouldFocus, getAutoSelect, getSelectedNote],

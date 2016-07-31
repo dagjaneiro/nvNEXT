@@ -1,12 +1,12 @@
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import ItemList from '../../components/ItemList'
-import { getAutoSelect, getSearchText, getSelectedNote, getFilteredNotes } from '../../common/selectors'
-import { selectNote } from '../../common/actions'
 import { createSelector } from 'reselect'
+import { bindActionCreators } from 'redux'
+import { selectNote } from '../../common/actions'
+import { getAutoSelect, getSearchText, getSelectedNote, getNotes } from '../../common/selectors'
+import ItemList from '../../components/ItemList'
 
 const mapStateToProps = createSelector(
-  [getAutoSelect, getSelectedNote, getSearchText, getFilteredNotes],
+  [getAutoSelect, getSelectedNote, getSearchText, getNotes],
   (autoSelect, selectedNote, searchText, notes) => {
     let selectedId = null
     if (autoSelect) {

@@ -1,8 +1,8 @@
-import React, { PropTypes, Component } from 'react'
-import CodeMirror from 'codemirror'
 import classNames from 'classnames'
+import CodeMirror from 'codemirror'
 import 'codemirror/mode/gfm/gfm'
 import 'codemirror/mode/javascript/javascript'
+import React, { PropTypes, Component } from 'react'
 
 const {ProseMirror} = require('prosemirror/dist/edit')
 const {exampleSetup} = require('prosemirror/dist/example-setup')

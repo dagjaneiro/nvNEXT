@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
+import setupSearchProvider from './main/search.ipc'
 
 let menu
 let template
@@ -29,6 +30,8 @@ const installExtensions = async () => {
 }
 
 app.on('ready', async () => {
+  setupSearchProvider()
+
   await installExtensions()
 
   mainWindow = new BrowserWindow({

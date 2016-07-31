@@ -1,14 +1,14 @@
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import SearchBar from '../../components/SearchBar'
-import { getSearchText, getSelectedNote, getAutoSelect, getMode, getTotalCount } from '../../common/selectors'
+import { createSelector } from 'reselect'
+import { bindActionCreators } from 'redux'
 import { focusEditor } from '../NoteEditor/actions'
 import { performSearch, createAndSelectNote } from '../../common/actions'
-import { createSelector } from 'reselect'
+import { getSearchText, getSelectedNote, getAutoSelect, getMode } from '../../common/selectors'
+import SearchBar from '../../components/SearchBar'
 
 const mapStateToProps = createSelector(
-  [getSearchText, getMode, getAutoSelect, getSelectedNote, getTotalCount],
-  (searchText, mode, autoSelect, selectedNote, totalCount) => {
+  [getSearchText, getMode, getAutoSelect, getSelectedNote],
+  (searchText, mode, autoSelect, selectedNote) => {
     let selectedId = null
     let selectedTitle = selectedNote && selectedNote.title
     if (selectedNote) {
@@ -21,8 +21,7 @@ const mapStateToProps = createSelector(
       value: searchText,
       selectedId,
       selectedTitle: selectedTitle,
-      autoSelect: autoSelect,
-      totalCount
+      autoSelect: autoSelect
     }
   }
 )

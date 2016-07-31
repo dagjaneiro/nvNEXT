@@ -1,4 +1,4 @@
-import { CREATE_NOTE, SEARCH_RESULT, PERFORM_SEARCH, LIST_SELECT_NOTE } from '../../common/actions'
+import { CREATE_NOTE, SEARCH_RESULT, PERFORM_SEARCH, SELECT_NOTE } from '../../common/actions'
 import { STATUS_DONE } from './constants'
 
 const initialState = {
@@ -13,7 +13,7 @@ function filter (filterState = initialState, action) {
     case PERFORM_SEARCH:
       return Object.assign({}, filterState, { text: action.payload.text, autoSelect: action.payload.autoSelect })
     case CREATE_NOTE:
-    case LIST_SELECT_NOTE:
+    case SELECT_NOTE:
       return Object.assign({}, filterState, { autoSelect: true })
     default:
       return filterState

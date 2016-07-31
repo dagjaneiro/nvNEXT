@@ -32,7 +32,7 @@ class ItemList extends Component {
     })
 
     return (
-      <tr key={note.id} className={styles} onClick={function () {
+      <tr key={note.id} className={styles} onMouseDown={function () {
         if (!isSelected) onClick(note.id, note.title)
       }}>
         <td>{note.title}</td>
