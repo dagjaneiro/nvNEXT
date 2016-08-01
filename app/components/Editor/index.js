@@ -90,11 +90,28 @@ class Editor extends Component {
     if (currentId !== nextId) {
       const nextNote = nextId ? nextProps.note : { id: null, content: '' }
       this.setState({ note: nextNote }, () => {
-        this.editor.setDoc(defaultMarkdownParser.parse(this.state.note.content))
+        const parsedContent = defaultMarkdownParser.parse(this.state.note.content)
+        this.editor.setDoc(parsedContent)
+
         if (nextNote.cursorPosition) {
-          this.editor.setTextSelection(nextNote.cursorPosition)
+          const cursorPosition = nextNote.cursorPosition
+          const nextPosition = this.getLastEditablePosition(cursorPosition)
+          this.editor.setTextSelection(nextPosition)
         }
       })
+    }
+  }
+
+  getLastEditablePosition (from) {
+    for (let i = from; i > 0; i--) {
+      let node
+      try {
+        node = this.editor.doc.nodeAt(i)
+      } catch (Error) {
+      }
+      if (node && node.isText) {
+        return i + 1
+      }
     }
   }
 

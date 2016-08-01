@@ -4,7 +4,7 @@ const sqlite3 = Sqlite3.verbose()
 export default class SearchProvider {
   constructor (options = {}, batchOptions = {}) {
     this.instance = new Promise((resolve, reject) => {
-      const db = new sqlite3.Database(':memory:', (err) => {
+      const db = new sqlite3.Database('./notes.sqlite3', (err) => {
         if (err) return reject(err)
         this.initSchema(db, resolve, reject)
       })
