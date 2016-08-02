@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu, shell } from 'electron'
 import setupSearchProvider from './main/search.ipc'
+// import './reuters'
 
 let menu
 let template

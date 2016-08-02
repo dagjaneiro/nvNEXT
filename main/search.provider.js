@@ -131,7 +131,7 @@ export default class SearchProvider {
 
     return new Promise((resolve, reject) => {
       this.instance.then((db) => {
-        db.all(`SELECT * FROM searchIndex WHERE searchIndex MATCH "${ftsCondition}"`, (err, rows) => {
+        db.all(`SELECT * FROM searchIndex WHERE searchIndex MATCH "${ftsCondition}" LIMIT 100`, (err, rows) => {
           if (err) return reject(err)
           resolve(rows)
         })
@@ -142,7 +142,7 @@ export default class SearchProvider {
   getAllNotes () {
     return new Promise((resolve, reject) => {
       this.instance.then((db) => {
-        db.all('SELECT * FROM notes', (err, rows) => {
+        db.all('SELECT * FROM notes LIMIT 100', (err, rows) => {
           if (err) return reject(err)
           resolve(rows)
         })

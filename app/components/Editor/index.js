@@ -35,6 +35,7 @@ class Editor extends Component {
     this.editor = new ProseMirror({
       place: element,
       doc: defaultMarkdownParser.parse(content),
+      // schema: schema,
       plugins: [
         exampleSetup.config({
           menuBar: false,
@@ -90,7 +91,8 @@ class Editor extends Component {
     if (currentId !== nextId) {
       const nextNote = nextId ? nextProps.note : { id: null, content: '' }
       this.setState({ note: nextNote }, () => {
-        const parsedContent = defaultMarkdownParser.parse(this.state.note.content)
+        const content = this.state.note.content ? this.state.note.content : ''
+        const parsedContent = defaultMarkdownParser.parse(content)
         this.editor.setDoc(parsedContent)
 
         if (nextNote.cursorPosition) {

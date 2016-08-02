@@ -24,7 +24,7 @@ function createDocument (id, title) {
 function selectNoteFromResults (text, results) {
   const searchText = text.toLowerCase()
   const selected = results.reduce((pre, cur) => {
-    const title = cur.title.toLowerCase()
+    const title = cur.title ? cur.title.toLowerCase() : ''
     if (title.startsWith(searchText)) {
       return pre && pre.title.length < cur.title.length ? pre : cur
     }
