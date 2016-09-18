@@ -1,8 +1,7 @@
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { bindActionCreators } from 'redux'
-import { focusEditor } from '../NoteEditor/actions'
-import { performSearch, createAndSelectNote } from '../../common/actions'
+import { performSearch, createNote } from '../../common/actions'
 import { getSearchText, getSelectedNote, getAutoSelect, getMode } from '../../common/selectors'
 import SearchBar from '../../components/SearchBar'
 
@@ -26,12 +25,15 @@ const mapStateToProps = createSelector(
   }
 )
 
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({
+function mapDispatchToProps (dispatch, ownProps) {
+  const actionCreators = bindActionCreators({
     onPerformSearch: performSearch,
-    onSelectItem: focusEditor,
-    onCreateItem: createAndSelectNote
+    onCreateItem: createNote
   }, dispatch)
+
+  return Object.assign(actionCreators, {
+    focusEditor: ownProps.focusEditor
+  })
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)

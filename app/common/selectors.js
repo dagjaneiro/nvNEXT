@@ -8,6 +8,7 @@ export const getResult = (state) => state.filter.result
 export const getSearchText = (state) => state.filter.text
 
 export const getSelectedNote = (state) => state.noteList.selectedNote
+export const getCurrentNote = (state) => state.editor
 
 export const getMode = createSelector(
   [getAutoSelect, getSelectedNote],

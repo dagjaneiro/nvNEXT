@@ -82,7 +82,7 @@ class SearchBar extends Component {
         this.props.onCreateItem(value)
         break
       case MODE_SELECTED:
-        this.props.onSelectItem(value)
+        this.props.focusEditor()
         break
     }
   }
@@ -121,8 +121,8 @@ SearchBar.propTypes = {
   selectedTitle: PropTypes.string,
   autoSelect: PropTypes.bool.isRequired,
   onPerformSearch: PropTypes.func.isRequired,
-  onSelectItem: PropTypes.func.isRequired,
-  onCreateItem: PropTypes.func.isRequired
+  onCreateItem: PropTypes.func.isRequired,
+  focusEditor: PropTypes.func
 }
 
 export default SearchBar

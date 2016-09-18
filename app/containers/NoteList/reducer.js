@@ -10,12 +10,13 @@ function noteList (noteListState = initialState, action) {
   switch (action.type) {
     case UPDATE_LIST:
       return Object.assign({}, noteListState, {
-        notes: action.payload
+        notes: action.payload.notes
       })
     case LOAD_NOTE:
+      const note = action.payload.note
       return Object.assign({}, noteListState, {
-        selectedId: action.payload.id,
-        selectedNote: action.payload
+        selectedId: note.id,
+        selectedNote: note
       })
     case DESELECT_NOTE:
       return Object.assign({}, noteListState, {

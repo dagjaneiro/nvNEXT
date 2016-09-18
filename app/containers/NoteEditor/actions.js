@@ -1,5 +1,3 @@
-export const BLUR_EDITOR = 'BLUR_EDITOR'
-export const FOCUS_EDITOR = 'FOCUS_EDITOR'
+export const UPDATE_EDITOR_STATE = 'UPDATE_EDITOR_STATE'
 
-export const blurEditor = () => ({ type: BLUR_EDITOR })
-export const focusEditor = () => ({ type: FOCUS_EDITOR })
+export const updateEditorState = (editorState) => ({ type: UPDATE_EDITOR_STATE, payload: { editorState } })

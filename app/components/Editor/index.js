@@ -1,166 +1,204 @@
-import classNames from 'classnames'
-import moment from 'moment'
-import CodeMirror from 'codemirror'
-import 'codemirror/mode/gfm/gfm'
-import 'codemirror/mode/javascript/javascript'
 import React, { PropTypes, Component } from 'react'
+import { Editor, RichUtils, Modifier, EditorState } from 'draft-js'
+import blockRender from './blocks/render'
+import styleMap from './style.map'
+import { keyBindingFn } from './keybindings'
 
-const {ProseMirror} = require('prosemirror/dist/edit')
-const {exampleSetup} = require('prosemirror/dist/example-setup')
-var {schema} = require('prosemirror/dist/schema-basic')
-const {defaultMarkdownParser, defaultMarkdownSerializer} = require('prosemirror/dist/markdown')
-
-class Editor extends Component {
+export default class nvEditor extends Component {
 
   constructor (props) {
     super(props)
-    this.initCodeMirror = this.initCodeMirror.bind(this)
-    this.initProseMirror = this.initProseMirror.bind(this)
     this.setFocus = this.setFocus.bind(this)
-    this.state = { focus: false, note: props.note }
-  }
+    this.onChange = this.onChange.bind(this)
+    this.handleKeyCommand = this.handleKeyCommand.bind(this)
+    this.handleReturn = this.handleReturn.bind(this)
 
-  initCodeMirror (textarea) {
-    console.log('init codemirror')
-    this.editor = CodeMirror.fromTextArea(textarea, {
-      lineWrapping: true,
-      mode: 'gfm'
-    })
-  }
-
-  initProseMirror (element) {
-    console.log('init prosemirror')
-    const note = this.state.note
-    const content = note && note.content || ''
-    this.editor = new ProseMirror({
-      place: element,
-      doc: defaultMarkdownParser.parse(content),
-      // schema: schema,
-      plugins: [
-        exampleSetup.config({
-          menuBar: false,
-          tooltipMenu: false
-        })
-      ]
-    })
-
-    this.editorRef = element
-    this.editor.on.blur.add(() => {
-      if (this.state.focus) {
-        this.setState({ focus: false })
-        this.setBlur()
-      }
-    })
-
-    this.editor.on.focus.add(() => {
-      if (!this.state.focus) {
-        this.setState({ focus: true })
-      }
-    })
+    props.triggerFocus(this.setFocus)
   }
 
   getId () {
-    return this.state.note && this.state.note.id
-  }
-
-  setBlur () {
-    console.log('blur editor!')
-    this.props.onBlur()
+    return this.props.noteId
   }
 
   setFocus () {
     if (this.getId()) {
-      console.log('focus editor!')
-      this.editor.focus()
+      this.refs.editor.focus()
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.shouldSave) return
-
-    const note = this.state.note
-    const currentId = note && note.id
-    const nextId = nextProps.note && nextProps.note.id
-
-    if (!this.state.focus && nextProps.shouldFocus) {
-      this.setState({ focus: true }, () => {
-        this.setFocus()
-      })
-    }
-
-    if (currentId !== nextId) {
-      const nextNote = nextId ? nextProps.note : { id: null, content: '' }
-      this.setState({ note: nextNote }, () => {
-        const content = this.state.note.content ? this.state.note.content : ''
-        const parsedContent = defaultMarkdownParser.parse(content)
-        this.editor.setDoc(parsedContent)
-
-        if (nextNote.cursorPosition) {
-          const cursorPosition = nextNote.cursorPosition
-          const nextPosition = this.getLastEditablePosition(cursorPosition)
-          this.editor.setTextSelection(nextPosition)
-        }
-      })
-    }
+  onChange (editorState) {
+    this.props.onChange(editorState)
   }
 
-  getLastEditablePosition (from) {
-    for (let i = from; i > 0; i--) {
-      let node
-      try {
-        node = this.editor.doc.nodeAt(i)
-      } catch (Error) {
+  _toggleBlockType (blockType) {
+    this.onChange(
+      RichUtils.toggleBlockType(
+        this.props.editorState,
+        blockType
+      )
+    )
+  }
+
+  _toggleInlineStyle (inlineStyle) {
+    this.onChange(
+      RichUtils.toggleInlineStyle(
+        this.props.editorState,
+        inlineStyle
+      )
+    )
+  }
+
+  handleKeyCommand (command) {
+    if (command.type === 'block') {
+      this._toggleBlockType(command.mode)
+    } else if (command.type === 'inline') {
+      this._toggleInlineStyle(command.mode)
+    }
+
+    const editorState = this.props.editorState
+    const newState = RichUtils.handleKeyCommand(editorState, command)
+
+    if (newState) {
+      this.onChange(newState)
+
+      return true
+    }
+
+    return false
+  }
+
+  // insertNewLine (editorState, resetBlockType) {
+  //   let contentState = editorState.getCurrentContent()
+
+  //   contentState = Modifier.splitBlock(
+  //     contentState,
+  //     editorState.getSelection()
+  //   )
+
+  //   if (resetBlockType) {
+  //     contentState = Modifier.setBlockType(
+  //       contentState,
+  //       contentState.getSelectionAfter(),
+  //       'unstyled'
+  //     )
+  //   }
+
+  //   return contentState
+  // }
+
+  insertNewLine (contentState, selection) {
+    return Modifier.splitBlock(
+      contentState,
+      selection
+    )
+  }
+
+  resetBlockType (contentState, selection) {
+    return Modifier.setBlockType(
+      contentState,
+      selection,
+      'unstyled'
+    )
+  }
+
+  getCurrentBlock (editorState) {
+    const blockKey = editorState.getSelection().getEndKey()
+    const currentContent = editorState.getCurrentContent()
+
+    return currentContent.getBlockForKey(blockKey)
+  }
+
+  isAtEndOfBlock (editorState) {
+    const selection = editorState.getSelection()
+    const offset = selection.getEndOffset()
+    const block = this.getCurrentBlock(editorState)
+    const length = block.getLength()
+
+    return offset === length
+  }
+
+  isEmptyBlock (editorState) {
+    const block = this.getCurrentBlock(editorState)
+    return block.getLength() === 0
+  }
+
+  resetOnReturn (blockType) {
+    const types = ['header']
+
+    return !!types.filter((type) => blockType.indexOf(type) > -1).length
+  }
+
+  resetOnReturnEmpty (blockType) {
+    const types = ['header', 'list']
+
+    return !!types.filter((type) => blockType.indexOf(type) > -1).length
+  }
+
+  handleReturn (e) {
+    const editorState = this.props.editorState
+    let contentState = editorState.getCurrentContent()
+
+    if (this.isEmptyBlock(editorState)) {
+      const blockType = RichUtils.getCurrentBlockType(editorState)
+      const resetBlockType = this.resetOnReturnEmpty(blockType)
+
+      if (resetBlockType) {
+        contentState = this.resetBlockType(contentState, editorState.getSelection())
+        this.onChange(EditorState.push(editorState, contentState, 'change-block-type'))
+      } else {
+        return false
       }
-      if (node && node.isText) {
-        return i + 1
+
+      return true
+    } else if (this.isAtEndOfBlock(editorState)) {
+      const blockType = RichUtils.getCurrentBlockType(editorState)
+      const resetBlockType = this.resetOnReturn(blockType)
+      contentState = this.insertNewLine(contentState, editorState.getSelection())
+
+      if (resetBlockType) {
+        contentState = this.resetBlockType(contentState, contentState.getSelectionAfter())
       }
-    }
-  }
 
-  saveDoc () {
-    const note = Object.assign({}, this.state.note, {
-      content: defaultMarkdownSerializer.serialize(this.editor.doc),
-      dateModified: moment().format('X'),
-      cursorPosition: this.editor.selection.from
-    })
-    this.props.onTriggerSave(note)
-  }
+      this.onChange(EditorState.push(editorState, contentState, 'split-block'))
 
-  shouldComponentUpdate (nextProps) {
-    if (nextProps.shouldSave && this.state.note.id) {
-      this.saveDoc()
+      return true
+    } else {
       return false
     }
-    return true
   }
 
   render () {
-    const editorStyle = classNames('editor-prose', {
-      'editor-hidden': !this.props.note
-    })
     return (
       <div className="editor-container" onClick={this.setFocus} >
         {
-          !this.props.note
+          !this.getId()
           ? <div className="editor-overlay">
             <div className="align-center">
               <p>No Note Selected</p>
             </div>
           </div>
-          : null
+          : <div className="nv-editor">
+            <Editor
+              blockRenderMap={blockRender}
+              customStyleMap={styleMap}
+              editorState={this.props.editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              handleReturn={this.handleReturn}
+              keyBindingFn={keyBindingFn}
+              onChange={this.onChange}
+              ref="editor"
+              spellCheck
+            />
+          </div>
         }
-        <div className={editorStyle} ref={this.initProseMirror} />
       </div>
     )
   }
 }
 
-Editor.propTypes = {
-  note: PropTypes.object,
-  shouldSave: PropTypes.bool.isRequired,
-  shouldFocus: PropTypes.bool.isRequired,
-  onBlur: PropTypes.func,
-  onTriggerSave: PropTypes.func
+nvEditor.propTypes = {
+  noteId: PropTypes.string,
+  editorState: PropTypes.object,
+  onChange: PropTypes.func,
+  triggerFocus: PropTypes.func
 }
-
-export default Editor

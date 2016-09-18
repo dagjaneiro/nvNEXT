@@ -11,5 +11,5 @@ export function createSelectChannel () {
 
 export function getNote (noteId) {
   console.log('get query!')
-  ipc.send('search-get', noteId)
+  ipc.send('get-note', noteId)
 }

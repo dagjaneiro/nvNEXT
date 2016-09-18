@@ -1,25 +1,14 @@
 import 'regenerator-runtime/runtime'
 import { takeLatest } from 'redux-saga'
 import { call, put, fork, select, take } from 'redux-saga/effects'
-import { PERFORM_SEARCH, SAVE_NOTE, CREATE_AND_SELECT, SEARCH_RESULT, SELECT_NOTE, LOAD_NOTE,
-  createNote, searchResult, performSearch, selectNote, deselectNote, requestSaveNote, loadNote } from './actions'
-import { getAutoSelect, getSearchText, getResult, getSelectedNote } from './selectors'
-import { focusEditor } from '../containers/NoteEditor/actions'
-import { createSearchChannel, searchNotes, updateNote } from './search.channel'
+import { PERFORM_SEARCH, SAVE_NOTE, CREATE_NOTE, SEARCH_RESULT, SELECT_NOTE, LOAD_NOTE,
+  NOTE_CREATED, NOTE_UPDATED, searchResult, performSearch, selectNote, deselectNote,
+  noteUpdated, saveNote, loadNote, noteCreated } from './actions'
+import { getSearchText, getResult, getCurrentNote } from './selectors'
+import { createSearchChannel, searchNotes, updateNote, createNote } from './search.channel'
 import { createSelectChannel, getNote } from './select.channel'
-import moment from 'moment'
-
-function createDocument (id, title) {
-  return {
-    id: id,
-    type: 'text',
-    title: title,
-    content: '',
-    cursorPosition: 0,
-    dateCreated: moment().format('X'),
-    dateSaved: moment().format('X')
-  }
-}
+import { getPlainText, getRawContent } from '../containers/NoteEditor/utils'
+import { focusEditor } from '../components/Editor/events'
 
 function selectNoteFromResults (text, results) {
   const searchText = text.toLowerCase()
@@ -34,30 +23,34 @@ function selectNoteFromResults (text, results) {
   return selected
 }
 
-function * searchNote (action) {
-  const previousNote = yield select(getSelectedNote)
+function * savePreviousNote () {
+  const currentNote = yield select(getCurrentNote)
+  const currentId = currentNote.noteId
 
-  if (previousNote) {
-    yield put(requestSaveNote())
-    yield take(SAVE_NOTE)
+  if (currentId) {
+    const editorContent = currentNote.editorState.getCurrentContent()
+    const plainText = getPlainText(editorContent)
+    const content = getRawContent(editorContent)
+    yield put(saveNote(currentId, plainText, content))
+    yield take(NOTE_UPDATED)
   }
+}
 
-  yield call(searchNotes, action.payload.text)
+function * searchNote (action) {
+  const shouldSelect = action.payload.autoSelect
+
+  yield call(searchNotes, { text: action.payload.text })
   yield take(SEARCH_RESULT)
 
   const text = yield select(getSearchText)
   const results = yield select(getResult)
-
-  const shouldSelect = yield select(getAutoSelect)
   const selectedNote = shouldSelect && selectNoteFromResults(text, results)
 
-  if (selectedNote) {
-    yield put(selectNote(selectedNote.id, selectedNote.title))
-    yield take(LOAD_NOTE)
+  yield call(savePreviousNote)
 
-    if (action.payload.focusEditor) {
-      yield put(focusEditor())
-    }
+  if (selectedNote) {
+    yield put(selectNote(selectedNote.id))
+    yield take(LOAD_NOTE)
   } else {
     yield put(deselectNote())
   }
@@ -67,8 +60,20 @@ function * searchHandler () {
   const chan = yield call(createSearchChannel)
   try {
     while (true) {
-      let result = yield take(chan)
-      yield put(searchResult(result.query, result.notes))
+      let action = yield take(chan)
+      let payload = action.payload
+
+      switch (action.type) {
+        case 'SEARCH_RESULTS':
+          yield put(searchResult(payload.query, payload.notes))
+          break
+        case 'NOTE_CREATED':
+          yield put(noteCreated(payload.id))
+          break
+        case 'NOTE_UPDATED':
+          yield put(noteUpdated())
+          break
+      }
     }
   } finally {
     console.error('search channel terminated')
@@ -88,15 +93,20 @@ function * loadNoteHandler () {
 }
 
 function * createNoteHandler (action) {
-  const newNote = createDocument(action.payload.id, action.payload.text)
-  yield call(updateNote, newNote)
-  yield put(createNote(newNote))
-  yield put(performSearch(action.payload.text, true, true))
+  yield call(createNote, { title: action.payload.title })
+  yield take(NOTE_CREATED)
+  yield call(searchNote, performSearch(action.payload.title, true))
+  yield call(focusEditor.focus)
 }
 
-function * saveNote (action) {
+function * saveNoteHandler (action) {
   console.log('save ' + action.payload.id)
   yield call(updateNote, action.payload)
+}
+
+function * selectNoteHandler (action) {
+  yield call(savePreviousNote)
+  yield call(getNote, action.payload.id)
 }
 
 export function * searchSaga () {
@@ -104,15 +114,15 @@ export function * searchSaga () {
 }
 
 export function * createSaga () {
-  yield * takeLatest(CREATE_AND_SELECT, createNoteHandler)
+  yield * takeLatest(CREATE_NOTE, createNoteHandler)
 }
 
 export function * saveSaga () {
-  yield * takeLatest(SAVE_NOTE, saveNote)
+  yield * takeLatest(SAVE_NOTE, saveNoteHandler)
 }
 
 export function * selectSaga () {
-  yield * takeLatest(SELECT_NOTE, (action) => getNote(action.payload))
+  yield * takeLatest(SELECT_NOTE, selectNoteHandler)
 }
 
 export default function * root () {

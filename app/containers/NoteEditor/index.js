@@ -1,28 +1,26 @@
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { bindActionCreators } from 'redux'
-import { blurEditor } from './actions'
-import { saveNote } from '../../common/actions'
-import { getShouldSave, getShouldFocus } from './selectors'
-import { getAutoSelect, getSelectedNote } from '../../common/selectors'
-import Editor from '../../components/Editor'
+import { blurEditor, updateEditorState } from './actions'
+import { getShouldFocus, getNoteId, getEditorState } from './selectors'
+import nvEditor from '../../components/Editor'
 
 const mapStateToProps = createSelector(
-  [getShouldSave, getShouldFocus, getAutoSelect, getSelectedNote],
-  (shouldSave, shouldFocus, autoSelect, note) => {
+  [getShouldFocus, getNoteId, getEditorState],
+  (shouldFocus, noteId, editorState) => {
     return {
-      shouldSave,
       shouldFocus,
-      note: autoSelect ? note : null
+      noteId,
+      editorState
     }
   }
 )
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    onTriggerSave: saveNote,
-    onBlur: blurEditor
+    onBlur: blurEditor,
+    onChange: updateEditorState
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Editor)
+export default connect(mapStateToProps, mapDispatchToProps)(nvEditor)

@@ -1,0 +1,85 @@
+.nvCodeLabel {
+  background: white;
+  float: right;
+  margin-top: -20px;
+  margin-right: -20px;
+  padding: 4px;
+  font-family: "Menlo";
+  font-size: 14px;
+  -webkit-user-select: none;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.nv-root {
+  background: #fff;
+  border: 1px solid #ddd;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  padding: 15px;
+}
+
+.nv-editor {
+  cursor: text;
+  font-size: 16px;
+  line-height: normal;
+}
+
+
+
+.nv-editor > h1, h2, h3, h4, h5, h6 {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.nv-editor .public-DraftEditorPlaceholder-root,
+.nv-editor .public-DraftEditor-content {
+  margin: 0;
+  padding: 0px 15px 0px 15px;
+}
+
+.nv-editor .public-DraftEditor-content {
+  min-height: 100px;
+}
+
+.nv-editor .nv-blockquote {
+  border-left: 5px solid #eee;
+  color: #666;
+  font-family: 'Hoefler Text', 'Georgia', serif;
+  font-style: italic;
+  margin: 16px 0;
+  padding: 10px 20px;
+}
+
+.nv-editor .public-DraftStyleDefault-pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+  font-size: 16px;
+  padding: 20px;
+}
+
+.nv-editor .public-DraftStyleDefault-pre > pre {
+  margin: 0px;
+}
+
+.public-DraftStyleDefault-ol, .public-DraftStyleDefault-ul {
+  margin: 8px 0;
+}
+
+.nv-controls {
+  font-family: 'Helvetica', sans-serif;
+  font-size: 14px;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.nv-styleButton {
+  color: #999;
+  cursor: pointer;
+  margin-right: 16px;
+  padding: 2px 0;
+}
+
+.nv-activeButton {
+  color: #5890ff;
+}

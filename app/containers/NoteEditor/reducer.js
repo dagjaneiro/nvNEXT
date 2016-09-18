@@ -1,28 +1,28 @@
-import { FOCUS_EDITOR, BLUR_EDITOR } from './actions'
-import { REQUEST_SAVE, SAVE_NOTE } from '../../common/actions'
+import { UPDATE_EDITOR_STATE } from './actions'
+import { LOAD_NOTE, DESELECT_NOTE } from '../../common/actions'
+import { createEditorState } from './utils'
 
 const initialState = {
-  save: false,
-  focus: false
+  noteId: null,
+  editorState: null
 }
 
 function editor (editorState = initialState, action) {
   switch (action.type) {
-    case REQUEST_SAVE:
+    case UPDATE_EDITOR_STATE:
       return Object.assign({}, editorState, {
-        save: true
+        editorState: action.payload.editorState
       })
-    case SAVE_NOTE:
+    case LOAD_NOTE:
+      const note = action.payload.note
       return Object.assign({}, editorState, {
-        save: false
+        noteId: note.id,
+        editorState: createEditorState(note.content)
       })
-    case FOCUS_EDITOR:
+    case DESELECT_NOTE:
       return Object.assign({}, editorState, {
-        focus: true
-      })
-    case BLUR_EDITOR:
-      return Object.assign({}, editorState, {
-        focus: false
+        noteId: null,
+        editorState: null
       })
     default:
       return editorState
