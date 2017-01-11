@@ -2,11 +2,7 @@
   background: #000;
   opacity: .2;
   z-index: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding;
   background-clip: padding-box;
 }
 
@@ -31,17 +27,18 @@
 }*/
 
 .Resizer.vertical {
-  width: 11px;
-  margin: 0 -5px;
-  border-left: 5px solid rgba(255, 255, 255, 0);
-  border-right: 5px solid rgba(255, 255, 255, 0);
+  width: 1px;
+  /*margin: 0 -5px;*/
+  border-left: 0px solid rgba(255, 255, 255, 0);
+  /*border-right: 5px solid rgba(255, 255, 255, 0);*/
   cursor: col-resize;
+  box-shadow: 1px 0 1px 0px #888;
 }
 
-.Resizer.vertical:hover {
+/*.Resizer.vertical:hover {
   border-left: 5px solid rgba(0, 0, 0, 0.5);
   border-right: 5px solid rgba(0, 0, 0, 0.5);
-}
+}*/
 Resizer.disabled {
   cursor: not-allowed;
 }
@@ -73,6 +70,14 @@ Resizer.disabled:hover {
 
 .pane-group {
   overflow: auto;
+}
+
+.pane-group::-webkit-scrollbar {
+    width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #aaa;
 }
 
 .editor-container {
@@ -197,4 +202,14 @@ table th.sort-down:hover:after {
 table th.sort-up:after {
   border-bottom:none;
   border-width:4px 4px 0;
+}
+
+.list-item {
+  border-bottom: solid 1px;
+  border-image: linear-gradient(to right, transparent 0px, #eee 30px) 1;
+
+}
+
+.list-item:first-child {
+  border-top: 0px;
 }

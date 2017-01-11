@@ -4,7 +4,7 @@ import SplitPane from 'react-split-pane'
 const AppContent = ({children}) => {
   return (
     <div className="window-content">
-      <SplitPane split="horizontal" minSize={50} defaultSize={100}>
+      <SplitPane split="vertical" minSize={50} defaultSize={200}>
         {children}
       </SplitPane>
     </div>

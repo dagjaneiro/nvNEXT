@@ -7,6 +7,8 @@ import NoteEditor from '../../containers/NoteEditor'
 import NoteStatus from '../../containers/NoteStatus'
 import { focusEditor } from '../../components/Editor/events'
 import AppContent from '../AppContent'
+import SplitPane from 'react-split-pane'
+import NotePreview from '../../containers/NotePreview'
 
 export default class App extends Component {
 
@@ -18,7 +20,10 @@ export default class App extends Component {
         </TitleBar>
         <AppContent>
           <NoteList />
-          <NoteEditor triggerFocus={focusEditor.onFocus} />
+          <SplitPane split="vertical" minSize={0} maxSize={-100} defaultSize={200} primary="second">
+            <NoteEditor triggerFocus={focusEditor.onFocus} />
+            <NotePreview />
+          </SplitPane>
         </AppContent>
         <NoteStatus />
       </Window>

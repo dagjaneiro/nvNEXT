@@ -1,0 +1,19 @@
+.tagList {
+  width: 100%;
+  margin-top: 6px;
+  padding: 0px;
+
+  display: flex;
+}
+
+.tag {
+  height: 16px;
+  border: solid 1px #ddd;
+  background-color: white;
+  border-radius: 12px;
+  margin: 0px 4px 0px 0px;
+  text-align: center;
+  font-size: 10px;
+  padding: 0px 8px 0px 8px;
+  line-height: 12px;
+}

@@ -1,5 +1,7 @@
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
-import decorator from '../../components/Editor/decorators'
+import Decorator from '../../components/Editor/decorators'
+
+const decorator = new Decorator()
 
 export function createEditorState (raw) {
   let editorState

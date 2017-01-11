@@ -32,6 +32,14 @@
   margin-bottom: 4px;
 }
 
+.nv-preview-container.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+}
+
 .nv-editor .public-DraftEditorPlaceholder-root,
 .nv-editor .public-DraftEditor-content {
   margin: 0;
@@ -82,4 +90,12 @@
 
 .nv-activeButton {
   color: #5890ff;
+}
+
+.md-bold {
+  font-weight: bold;
+}
+
+.md-italic {
+  font-style: italic;
 }

@@ -3,7 +3,8 @@ import { createSelector } from 'reselect'
 import { bindActionCreators } from 'redux'
 import { selectNote } from '../../common/actions'
 import { getAutoSelect, getSearchText, getSelectedNote, getNotes } from '../../common/selectors'
-import ItemList from '../../components/ItemList'
+// import ItemList from '../../components/ItemList'
+import VerticalItemList from '../../components/VerticalItemList'
 
 const mapStateToProps = createSelector(
   [getAutoSelect, getSelectedNote, getSearchText, getNotes],
@@ -27,4 +28,4 @@ function mapDispatchToProps (dispatch) {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemList)
+export default connect(mapStateToProps, mapDispatchToProps)(VerticalItemList)

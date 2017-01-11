@@ -1,0 +1,55 @@
+.noteItem {
+  height: 68px;
+  /*min-width: 120px;*/
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+}
+
+.noteItem * {
+  cursor: pointer;
+}
+
+.noteItem:hover {
+  background-color: rgba(220, 220, 220, 0.1);
+}
+
+.header {
+  display: flex;
+}
+
+.noteItemTitle {
+  align-self: center;
+  font-family: .AppleSystemUIFont;
+  font-size: 14px;
+  color: #030303;
+  /*letter-spacing: -0.41px;*/
+}
+
+.noteItemBody {
+  font-family: .AppleSystemUIFont;
+  font-size: 15px;
+  color: #8F8E94;
+  height: 24px;
+  /*letter-spacing: -0.24px;*/
+}
+
+.noteItemArrow {
+  padding-bottom: -10px;
+  margin-left: auto;
+  height: 32px;
+  width: 32px;
+  background:
+    url("data:image/svg+xml;utf8,<svg width='9px' height='14px' viewBox='353 12 9 14' version='1.1' xmlns='http://www.w3.org/2000/svg'><polygon id='Disclosure-Indicator' stroke='none' fill='#C7C7CC' fill-rule='evenodd' points='353.5 14 355 12.5 361.5 19 355 25.5 353.5 24 358.5 19'></polygon></svg>") 100% no-repeat
+}
+
+.arrowSelected {
+  background:
+    url("data:image/svg+xml;utf8,<svg width='9px' height='14px' viewBox='353 12 9 14' version='1.1' xmlns='http://www.w3.org/2000/svg'><polygon id='Disclosure-Indicator' stroke='none' fill='#0076FF' fill-rule='evenodd' points='353.5 14 355 12.5 361.5 19 355 25.5 353.5 24 358.5 19'></polygon></svg>") 100% no-repeat
+}
+
+.noteSelected {
+  background-color: rgba(220, 220, 220, 0.4) !important;
+}

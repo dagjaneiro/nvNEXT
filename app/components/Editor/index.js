@@ -179,12 +179,12 @@ export default class nvEditor extends Component {
           </div>
           : <div className="nv-editor">
             <Editor
-              blockRenderMap={blockRender}
-              customStyleMap={styleMap}
+              // blockRenderMap={blockRender}
+              // customStyleMap={styleMap}
               editorState={this.props.editorState}
-              handleKeyCommand={this.handleKeyCommand}
-              handleReturn={this.handleReturn}
-              keyBindingFn={keyBindingFn}
+              // handleKeyCommand={this.handleKeyCommand}
+              // handleReturn={this.handleReturn}
+              // keyBindingFn={keyBindingFn}
               onChange={this.onChange}
               ref="editor"
               spellCheck
