@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Window from '../Window'
 import TitleBar from '../TitleBar'
 import SearchNote from '../../containers/SearchNote'
@@ -9,24 +9,23 @@ import { focusEditor } from '../../components/Editor/events'
 import AppContent from '../AppContent'
 import SplitPane from 'react-split-pane'
 import NotePreview from '../../containers/NotePreview'
+import QuickOpen from '../../containers/QuickOpen'
 
-export default class App extends Component {
-
-  render () {
-    return (
-      <Window>
-        <TitleBar title="nvNEXT">
-          <SearchNote focusEditor={focusEditor.focus} />
-        </TitleBar>
-        <AppContent>
-          <NoteList />
-          <SplitPane split="vertical" minSize={0} maxSize={-100} defaultSize={200} primary="second">
-            <NoteEditor triggerFocus={focusEditor.onFocus} />
-            <NotePreview />
-          </SplitPane>
-        </AppContent>
-        <NoteStatus />
-      </Window>
-    )
-  }
+export default () => {
+  return (
+    <Window>
+      <QuickOpen />
+      <TitleBar title="nvNEXT">
+        <SearchNote focusEditor={focusEditor.focus} />
+      </TitleBar>
+      <AppContent>
+        <NoteList />
+        <SplitPane split="vertical" minSize={0} maxSize={-100} defaultSize={200} primary="second">
+          <NoteEditor triggerFocus={focusEditor.onFocus} />
+          <NotePreview />
+        </SplitPane>
+      </AppContent>
+      <NoteStatus />
+    </Window>
+  )
 }

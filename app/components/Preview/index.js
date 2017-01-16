@@ -5,7 +5,7 @@ const Preview = ({ noteHtml }) => {
     return {__html: noteHtml}
   }
 
-  return <div className='nv-preview-container markdown-body' dangerouslySetInnerHTML={createMarkup()} />
+  return <div className="nv-preview-container markdown-body" dangerouslySetInnerHTML={createMarkup()} />
 }
 
 Preview.propTypes = {
