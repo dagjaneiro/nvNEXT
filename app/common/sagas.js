@@ -9,6 +9,7 @@ import { createSearchChannel, searchNotes, updateNote, createNote } from './sear
 import { createSelectChannel, getNote } from './select.channel'
 import { getPlainText, getRawContent } from '../containers/NoteEditor/utils'
 import { focusEditor } from '../components/Editor/events'
+import { QUICK_OPEN } from '../containers/QuickOpen/actions'
 
 function selectNoteFromResults (text, results) {
   const searchText = text.toLowerCase()
@@ -54,6 +55,10 @@ function * searchNote (action) {
   } else {
     yield put(deselectNote())
   }
+}
+
+function * quickSearchNotes (action) {
+  yield call(searchNotes, { text: action.payload.text })
 }
 
 function * searchHandler () {
@@ -109,28 +114,23 @@ function * selectNoteHandler (action) {
   yield call(getNote, action.payload.id)
 }
 
-export function * searchSaga () {
-  yield * takeLatest(PERFORM_SEARCH, searchNote)
-}
-
-export function * createSaga () {
-  yield * takeLatest(CREATE_NOTE, createNoteHandler)
-}
-
-export function * saveSaga () {
-  yield * takeLatest(SAVE_NOTE, saveNoteHandler)
-}
-
-export function * selectSaga () {
-  yield * takeLatest(SELECT_NOTE, selectNoteHandler)
+function * quickOpenDisplay (action) {
+  if (action.payload.open) {
+    yield call(searchNotes, { text: '' })
+    yield take(LOAD_NOTE)
+    yield call(focusEditor.focus)
+  } else {
+    console.log('closed quick open')
+  }
 }
 
 export default function * root () {
   yield [
-    fork(searchSaga),
-    fork(createSaga),
-    fork(saveSaga),
-    fork(selectSaga),
+    fork(takeLatest, PERFORM_SEARCH, quickSearchNotes),
+    fork(takeLatest, QUICK_OPEN, quickOpenDisplay),
+    fork(takeLatest, CREATE_NOTE, createNoteHandler),
+    fork(takeLatest, SAVE_NOTE, saveNoteHandler),
+    fork(takeLatest, SELECT_NOTE, selectNoteHandler),
     fork(searchHandler),
     fork(loadNoteHandler)
   ]

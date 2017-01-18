@@ -101,6 +101,21 @@ app.on('ready', async () => {
         }
       }]
     }, {
+      label: 'File',
+      submenu: [{
+        label: 'Create Note',
+        accelerator: 'Command+N',
+        click () {
+          mainWindow.webContents.send('quick-create')
+        }
+      }, {
+        label: 'Open Note',
+        accelerator: 'Command+P',
+        click () {
+          mainWindow.webContents.send('quick-open')
+        }
+      }]
+    }, {
       label: 'Edit',
       submenu: [{
         label: 'Undo',

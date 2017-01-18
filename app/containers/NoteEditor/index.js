@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { bindActionCreators } from 'redux'
-import { blurEditor, updateEditorState } from './actions'
+import { updateEditorState } from './actions'
 import { getShouldFocus, getNoteId, getEditorState } from './selectors'
 import nvEditor from '../../components/Editor'
 
@@ -18,7 +18,6 @@ const mapStateToProps = createSelector(
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    onBlur: blurEditor,
     onChange: updateEditorState
   }, dispatch)
 }

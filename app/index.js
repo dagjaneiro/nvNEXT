@@ -1,3 +1,5 @@
+import { ipcRenderer } from 'electron'
+import { quickOpen, quickCreate } from './containers/QuickOpen/actions'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -7,6 +9,14 @@ import './app.global.css'
 import 'regenerator-runtime/runtime'
 
 const store = configureStore()
+
+ipcRenderer.on('quick-open', () => {
+  store.dispatch(quickOpen(true))
+})
+
+ipcRenderer.on('quick-create', () => {
+  store.dispatch(quickCreate(true))
+})
 
 render(
   <Provider store={store}>
