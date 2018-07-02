@@ -1,4 +1,4 @@
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
+import { EditorState, convertFromRaw, convertToRaw, SelectionState, Modifier } from 'draft-js'
 import Decorator from '../../components/Editor/decorators'
 
 const decorator = new Decorator()
@@ -22,4 +22,15 @@ export function getRawContent (editorContent) {
 
 export function getPlainText (editorContent) {
   return editorContent.getPlainText(' ')
+}
+
+export function setBlockType (editorContent, id, type) {
+  const selection = SelectionState.createEmpty(id)
+  return Modifier.setBlockType(editorContent, selection, type)
+}
+
+export function getChangedBlocks (oldContent, newContent) {
+  const oldBlocks = oldContent.getBlockMap()
+  const newBlocks = newContent.getBlockMap()
+  return newBlocks.filter((block) => !(oldBlocks && oldBlocks.includes(block)))
 }

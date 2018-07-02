@@ -4,16 +4,22 @@ const marked = require('marked')
 
 const KEY_SEPARATOR = '-'
 
-const strategies = [{
-  match: /(([_]{2})+)[^_]+?\1/g,
-  class: 'md-bold'
-}, {
-  match: /(([_|\*]{2})+[_|\*])[^_]+?\1/g,
-  class: 'md-bold md-italic'
-}, {
-  match: /_[^_]+?_/g,
-  class: 'md-italic'
-}]
+const strategies = [
+//   {
+//   match: /(([_]{2})+)[^_]+?\1/g,
+//   class: 'md-bold'
+// }, {
+//   match: /(([_|\*]{2})+[_|\*])[^_]+?\1/g,
+//   class: 'md-bold md-italic'
+// }, {
+//   match: /_[^_]+?_/g,
+//   class: 'md-italic'
+// }
+// {
+//   match: /a/g,
+//   class: 'svg-image'
+// }
+]
 
 function findWithRegex (regex, props, contentBlock, callback) {
   const text = contentBlock.getText()
@@ -84,8 +90,15 @@ markdownDecorator.prototype.getDecorations = function (block) {
  * @return {Function}
  */
 markdownDecorator.prototype.getComponentForKey = function (key) {
-  return (props) => (<span {...props}>{props.children}</span>)
+  return (props) => (
+    <span>
+      {'\t'}
+    </span>
+  )
 }
+      // <span style={{color: "white", "font-size": "20px"}}>
+      //   {props.children}
+      // </span>
 
 /**
  * Return props to render a decoration

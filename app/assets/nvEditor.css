@@ -1,23 +1,51 @@
-.nvCodeLabel {
+.nvBlockContainer {
+}
+
+.svg-image {
+  background-image: url('./h3.svg');
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+}
+
+.svg-image span[data-text=true] {
+  color: transparent;
+}
+
+.nvGutter {
   background: white;
-  float: right;
-  margin-top: -20px;
-  margin-right: -20px;
-  padding: 4px;
-  font-family: "Menlo";
-  font-size: 14px;
+  /*font-size: 14px;*/
   -webkit-user-select: none;
-  pointer-events: none;
+  /*pointer-events: none;*/
   cursor: pointer;
+  text-align: center;
+  float: left;
+  margin-left: 18px;
+}
+
+.nvGutter strong {
+  font-size: 13px;
+  font-weight: 500;
+  color: darkgrey;
+}
+
+.nvGutter em {
+  font-size: 10px;
+  font-weight: 400;
+  font-style: normal;
+  color: darkgrey;
+}
+
+.nvText {
+  margin-left: 40px;
 }
 
 .nv-root {
   background: #fff;
   border: 1px solid #ddd;
-  font-family: 'Georgia', serif;
   font-size: 14px;
   padding: 15px;
 }
+
 
 .nv-editor {
   cursor: text;
@@ -25,11 +53,24 @@
   line-height: normal;
 }
 
-
-
 .nv-editor > h1, h2, h3, h4, h5, h6 {
   margin-top: 8px;
   margin-bottom: 4px;
+}
+
+.nv-editor h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.nv-editor h2 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.nv-editor h1 {
+  font-size: 21px;
+  font-weight: 500;
 }
 
 .nv-preview-container.markdown-body {
@@ -42,8 +83,9 @@
 
 .nv-editor .public-DraftEditorPlaceholder-root,
 .nv-editor .public-DraftEditor-content {
-  margin: 0;
   padding: 0px 15px 0px 15px;
+  font-family: 'Avenir Next';
+  font-size: 14px;
 }
 
 .nv-editor .public-DraftEditor-content {
@@ -64,6 +106,7 @@
   font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
   font-size: 16px;
   padding: 20px;
+  position: relative;
 }
 
 .nv-editor .public-DraftStyleDefault-pre > pre {

@@ -11,6 +11,10 @@ export default {
       loader: 'json-loader'
     }]
   },
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',

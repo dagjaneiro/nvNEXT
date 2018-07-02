@@ -18,6 +18,8 @@ ipcRenderer.on('quick-create', () => {
   store.dispatch(quickCreate(true))
 })
 
+// store.dispatch({type: 'SELECT_NOTE', payload: { id: 'ByzUkZJ8g' }})
+
 render(
   <Provider store={store}>
     <App />

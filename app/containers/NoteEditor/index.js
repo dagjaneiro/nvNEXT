@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { bindActionCreators } from 'redux'
-import { updateEditorState } from './actions'
+import { updateEditorState, setBlockType } from './actions'
 import { getShouldFocus, getNoteId, getEditorState } from './selectors'
-import nvEditor from '../../components/Editor'
+import Editor from '../../components/Editor/nvEditor'
 
 const mapStateToProps = createSelector(
   [getShouldFocus, getNoteId, getEditorState],
@@ -18,8 +18,9 @@ const mapStateToProps = createSelector(
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    onChange: updateEditorState
+    onChange: updateEditorState,
+    onSetBlockType: setBlockType
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(nvEditor)
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

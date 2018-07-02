@@ -1,17 +1,15 @@
 import React, { PropTypes, Component } from 'react'
-import NVEditor from '../Editor/nvEditor'
 
-export default class EditorWithGutter extends Component {
+export default class EditorGutter extends Component {
   render () {
     return (
-      <div className="nv-editor-container">
-        <NVEditor {...this.props} />
+      <div className="nv-editor-gutter">
       </div>
     )
   }
 }
 
-EditorWithGutter.propTypes = {
+EditorGutter.propTypes = {
   noteId: PropTypes.string,
   editorState: PropTypes.object,
   onChange: PropTypes.func,

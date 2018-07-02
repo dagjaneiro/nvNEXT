@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-const TitleBar = ({title, children}) => {
+const TitleBar = ({title}) => {
   return (
     <header className="toolbar toolbar-header">
       <h1 className="title">{title}</h1>
@@ -9,8 +9,7 @@ const TitleBar = ({title, children}) => {
 }
 
 TitleBar.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired
+  title: PropTypes.string.isRequired
 }
 
 export default TitleBar
